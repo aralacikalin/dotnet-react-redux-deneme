@@ -16,9 +16,9 @@ namespace dotnet_react_redux_deneme.Data{
             {
                entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
                entity.HasKey(e=>e.DepartmentId);
-               entity.Property(e => e.Name).HasMaxLength(50).IsUnicode(false);
-               entity.Property(e => e.GroupName).HasMaxLength(50).IsUnicode(false);
-               entity.Property(e => e.ModifiedDate);
+               entity.Property(e => e.Name).HasMaxLength(50);
+               entity.Property(e => e.GroupName).HasMaxLength(50);
+               entity.Property(e => e.ModifiedDate).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
             });
             */
             modelBuilder.Entity<Department>(entity =>
