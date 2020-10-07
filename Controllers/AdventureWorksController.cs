@@ -15,14 +15,14 @@ namespace dotnet_react_redux_deneme.Controllers{
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<HumanRecoursesDepartment>> getAllDepartments(){
+        public ActionResult<IEnumerable<Department>> getAllDepartments(){
             var departments=_repo.getAllDepartments();
             return Ok(departments);
             
         }
 
         [HttpGet("{id}")]
-        public ActionResult<HumanRecoursesDepartment> getDepartmentById(int id){
+        public ActionResult<Department> getDepartmentById(int id){
             var department=_repo.getDepartmentById(id);
             return Ok(department);
             

@@ -11,14 +11,14 @@ namespace dotnet_react_redux_deneme.Data{
         {
             _context=context;
         }
-        public IEnumerable<HumanRecoursesDepartment> getAllDepartments()
+        public IEnumerable<Department> getAllDepartments()
         {
             return _context.departments.ToList();
         }
 
-        public HumanRecoursesDepartment getDepartmentById(int id)
+        public Department getDepartmentById(int id)
         {
-            return _context.departments.FirstOrDefault(p=>p.DepartmentID==id);
+            return _context.departments.FirstOrDefault(p=>p.DepartmentId==id);
         }
     }
 }
