@@ -1,8 +1,10 @@
+using dotnet_react_redux_deneme.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,14 +30,17 @@ namespace dotnet_react_redux_deneme
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(
-                              builder =>
-                              {
-                                  builder.WithOrigins("http://localhost:3000/").AllowCredentials().AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(origin=>true);
-                              });
-        });
+            services.AddCors(options =>{
+                options.AddDefaultPolicy(builder =>{
+                    builder.WithOrigins("http://localhost:3000/").AllowCredentials().AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(origin=>true);
+                });
+            });
+
+            services.AddDbContext<AdventureWorksContext>(opt=>opt.UseSqlServer(
+                Configuration.GetConnectionString("AdventureWorksConnection")
+            ));
+            services.AddScoped<IAdventureWorksRepo,SqlAdventureWorksRepo>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
