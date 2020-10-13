@@ -21,7 +21,7 @@ namespace dotnet_react_redux_deneme.Controllers
         public CounterVariableController(ILogger<CounterVariableController> logger)
         {
             _logger = logger;
-            var folderDetails = "D:\\Workplace\\C#\\dotnet react-redux deneme\\api\\db.json";
+            var folderDetails = "api\\db.json";
             var JSON = System.IO.File.ReadAllText(folderDetails);
             obj=JsonConvert.DeserializeObject<CounterVariable>(JSON);
         }
@@ -34,7 +34,7 @@ namespace dotnet_react_redux_deneme.Controllers
         [HttpPut,]
         public ActionResult set([FromBody]CounterVariable count){
             obj.counter=count.counter;
-            var folderDetails = "D:\\Workplace\\C#\\dotnet react-redux deneme\\api\\db.json";
+            var folderDetails = "api\\db.json";
             var serjson=JsonConvert.SerializeObject(obj);
             System.IO.File.WriteAllText(folderDetails,serjson);
 
