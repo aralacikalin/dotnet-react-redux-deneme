@@ -31,7 +31,7 @@ export default (props: { children?: React.ReactNode }) => {
     return(
     <React.Fragment>
         <ThemeProvider theme={mytheme}>
-            <Toggle label="Dark Mode" onChange={handleOnChange}></Toggle>
+            <Toggle label="Dark Mode" onText="On" offText="Off" onChange={handleOnChange}></Toggle>
             <NavMenu/>
             <Container>
                 {props.children}
