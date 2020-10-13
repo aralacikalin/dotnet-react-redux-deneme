@@ -30,12 +30,12 @@ export default (props: { children?: React.ReactNode }) => {
 
     return(
     <React.Fragment>
-        <Toggle label="Dark Mode" onChange={handleOnChange}></Toggle>
-<ThemeProvider theme={mytheme}>
-        <NavMenu/>
-        <Container>
-            {props.children}
-        </Container>
+        <ThemeProvider theme={mytheme}>
+            <Toggle label="Dark Mode" onChange={handleOnChange}></Toggle>
+            <NavMenu/>
+            <Container>
+                {props.children}
+            </Container>
         </ThemeProvider>
     </React.Fragment>
 )};
