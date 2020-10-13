@@ -5,6 +5,7 @@
   "proxy": "https://localhost:5001",
   "dependencies": {
     "@fluentui/react": "^7.144.0",
+    "@fluentui/react-theme-provider": "^0.15.0",
     "@uifabric/icons": "^7.5.8",
     "axios": "^0.20.0",
     "bootstrap": "^4.3.1",
