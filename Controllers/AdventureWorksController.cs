@@ -27,5 +27,12 @@ namespace dotnet_react_redux_deneme.Controllers{
             return Ok(department);
             
         }
+
+        [HttpPost]
+        public ActionResult<Department> createDepartment(Department department){
+            _repo.createDepartment(department);
+            _repo.saveChanges();
+            return Ok(department);
+        }
     }
 }
