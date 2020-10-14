@@ -5,12 +5,18 @@ import Home from './components/Home';
 import Counter from './components/Counter';
 import FetchData from './components/FetchData';
 
-import './custom.css'
 
-export default () => (
+import './custom.css'
+import { createTheme } from '@fluentui/react';
+
+export default () => {
+
+    return(
+        
     <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
     </Layout>
-);
+    
+)};
