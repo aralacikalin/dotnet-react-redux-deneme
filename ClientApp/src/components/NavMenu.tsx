@@ -31,6 +31,9 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                     <PivotItem headerText="Fetch Data">
                                         <Redirect to="/fetch-data"></Redirect>
                                     </PivotItem>
+                                    <PivotItem headerText="Adventureworks">
+                                        <Redirect to="/adventurework"></Redirect>
+                                    </PivotItem>
                                 </Pivot>
                             </ul>
                         </Collapse>
