@@ -88,48 +88,30 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
     }
 
     nextButtonHandle(){
-        if(this.state.adventureworks.length-this.state.oldIndex>=5){
 
-            this.setState({oldIndex:this.state.currentIndex},()=>{
-    
-                this.setState({currentIndex:this.state.currentIndex+5},()=>{
-                    if(this.state.currentIndex>=this.state.adventureworks.length-1){
-                        this.setState({currentIndex:this.state.adventureworks.length},()=>{
-                            
-                            if(this.state.oldIndex!=this.state.adventureworks.length){
-    
-                                this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.oldIndex,this.state.adventureworks.length)})
-                            }
-                        });
-                        
-                    }
-                    else{
-                        this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.currentIndex-5,this.state.currentIndex)})
-                        
-                    }
-                    console.log(this.state.currentIndex-5,this.state.currentIndex,this.state.oldIndex)
-                });
-            });
-        }
+
+        if(!(this.state.currentIndex>=this.state.adventureworks.length)){
+        this.setState({currentIndex:this.state.currentIndex+5},()=>{
+            this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.currentIndex-5,this.state.currentIndex)})
+        });
+    }
+
         
     }
     prevButtonHandle(){
 
-            this.setState({oldIndex:this.state.oldIndex-5},()=>{
-    
-                this.setState({currentIndex:this.state.currentIndex-5},()=>{
-                    if(this.state.currentIndex<=5){
-                        this.setState({currentIndex:5},()=>{
-        
-                            this.setState({departmentstoShow:this.state.adventureworks.slice(0,5)})
-                        });
-                    }
-                    else{
-                        this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.oldIndex-5,this.state.oldIndex)})
-                    }
-                    console.log(this.state.currentIndex-5,this.state.currentIndex,this.state.oldIndex)
+        this.setState({currentIndex:this.state.currentIndex-5},()=>{
+            if(this.state.currentIndex<=5){
+                this.setState({currentIndex:5},()=>{
+
+                    this.setState({departmentstoShow:this.state.adventureworks.slice(0,5)})
                 });
-            });
+            }
+            else{
+                this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.currentIndex-5,this.state.currentIndex)})
+            }
+        });
+
         
     }
     renderButtons(){
