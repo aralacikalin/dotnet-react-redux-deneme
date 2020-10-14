@@ -1,10 +1,13 @@
-import { DetailsList,SelectionMode,IColumn } from '@fluentui/react';
+import { DetailsList,SelectionMode,IColumn, CompoundButton } from '@fluentui/react';
 import * as React from 'react';
 import "./Adventureworks.css";
 
 interface IState{
     adventureworks:Object[],
-    columns:IColumn[];
+    columns:IColumn[],
+    currentIndex:number,
+    departmentstoShow:Object[],
+    oldIndex:number
 }
 
 export default class Adventureworks extends React.PureComponent<{},IState>{
@@ -45,8 +48,13 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         
         this.state={
             adventureworks:[],
-            columns:columns
+            columns:columns,
+            currentIndex:5,
+            departmentstoShow:[],
+            oldIndex:0
         }
+        this.nextButtonHandle=this.nextButtonHandle.bind(this);
+        this.prevButtonHandle=this.prevButtonHandle.bind(this);
     }
 
     async componentDidMount(){
@@ -58,7 +66,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         }
         else{
 
-            this.setState({adventureworks:data})
+            this.setState({adventureworks:data,departmentstoShow:data.slice(0,5)})
         }
         
     }
@@ -68,13 +76,68 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
 
     renderDepartmentTable(){
         return(
-            <div className="header">
+            <div>
                 <DetailsList
-                    items={this.state.adventureworks}
+                    items={this.state.departmentstoShow}
                     selectionMode={SelectionMode.none}
                     columns={this.state.columns}
                 />
-      </div>
+
+            </div>
+        );
+    }
+
+    nextButtonHandle(){
+        if(this.state.adventureworks.length-this.state.oldIndex>=5){
+
+            this.setState({oldIndex:this.state.currentIndex},()=>{
+    
+                this.setState({currentIndex:this.state.currentIndex+5},()=>{
+                    if(this.state.currentIndex>=this.state.adventureworks.length-1){
+                        this.setState({currentIndex:this.state.adventureworks.length},()=>{
+                            
+                            if(this.state.oldIndex!=this.state.adventureworks.length){
+    
+                                this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.oldIndex,this.state.adventureworks.length)})
+                            }
+                        });
+                        
+                    }
+                    else{
+                        this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.currentIndex-5,this.state.currentIndex)})
+                        
+                    }
+                    console.log(this.state.currentIndex-5,this.state.currentIndex,this.state.oldIndex)
+                });
+            });
+        }
+        
+    }
+    prevButtonHandle(){
+
+            this.setState({oldIndex:this.state.oldIndex-5},()=>{
+    
+                this.setState({currentIndex:this.state.currentIndex-5},()=>{
+                    if(this.state.currentIndex<=5){
+                        this.setState({currentIndex:5},()=>{
+        
+                            this.setState({departmentstoShow:this.state.adventureworks.slice(0,5)})
+                        });
+                    }
+                    else{
+                        this.setState({departmentstoShow:this.state.adventureworks.slice(this.state.oldIndex-5,this.state.oldIndex)})
+                    }
+                    console.log(this.state.currentIndex-5,this.state.currentIndex,this.state.oldIndex)
+                });
+            });
+        
+    }
+    renderButtons(){
+        return(
+            <div className="d-flex justify-content-between">
+                <CompoundButton primary onClick={this.prevButtonHandle} >Previous</CompoundButton>
+                <CompoundButton primary onClick={this.nextButtonHandle}>Next</CompoundButton>
+            </div>
         );
     }
 
@@ -84,6 +147,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
             <h1 id="tabelLabel">Human Recourses Departments</h1>
             <p>This component demonstrates fetching data from the server and working with URL parameters.</p>
             {this.renderDepartmentTable()}
+            {this.renderButtons()}
           </React.Fragment>
         );
     }
