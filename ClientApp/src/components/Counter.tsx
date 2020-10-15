@@ -17,6 +17,7 @@ interface IState{
 }
 
 class Counter extends React.PureComponent<CounterProps,IState> {
+    isUnmount: boolean=false;
     constructor(props:CounterProps){
         super(props);
 
@@ -29,7 +30,16 @@ class Counter extends React.PureComponent<CounterProps,IState> {
     async componentDidMount(){
         const res= await fetch("countervariable")
         const data= await res.json();
-        this.setState({counter:data})
+        if(this.isUnmount){
+            return;
+        }
+        else{
+
+            this.setState({counter:data})
+        }
+    }
+    componentWillUnmount(){
+        this.isUnmount=true;
     }
 
     onclick(){
