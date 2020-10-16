@@ -4,7 +4,7 @@ import * as React from 'react';
 interface IState{
     name:string,
     groupName:string,
-    date:string
+    date:Date |undefined
 }
 
 export default class AdventureworksItem extends React.PureComponent<{},IState>{
@@ -16,18 +16,21 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
         this.state={
             name:"",
             groupName:"",
-            date:""
+            date: undefined
         }
         this.onNameChange=this.onNameChange.bind(this)
         this.onGroupNameChange=this.onGroupNameChange.bind(this)
-        this.onDateChange=this.onDateChange.bind(this)
+        //this.onDateChange=this.onDateChange.bind(this)
         this.clicked=this.clicked.bind(this)
+        this.onDateSelect=this.onDateSelect.bind(this)
     }
+    /*
     onDateChange(event:React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string){
         this.setState({
             date:newValue||""
         })
     }
+    */
     onNameChange(event:React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string){
         this.setState({
             name:newValue||""
@@ -42,7 +45,7 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
         if(this.state.name!==""&&this.state.groupName!==""){
             var body={}
 
-            if(this.state.date==""){
+            if(this.state.date==undefined){
 
                 body={Name:this.state.name,GroupName:this.state.groupName}
             }
@@ -72,13 +75,28 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
             alert("Enter all required fields")
         }
     }
+    onDateSelect(date: Date | null | undefined){
+        if(date&&date){
+
+            this.setState({
+                date:date
+            })
+        }
+        else{
+            this.setState({
+                date:undefined
+            })
+        }
+
+    }
     render(){
         return(
             <div>
                 <Stack>
                     <TextField label="Department Name" value={this.state.name} onChange={this.onNameChange} underlined required  />
-                    <TextField label="Department Group Name" value={this.state.groupName} onChange={this.onGroupNameChange} underlined required />
-                    <MaskedTextField label="Date" value={this.state.date} onChange={this.onDateChange} mask="9999-99-99" underlined maskChar="Y-M-D" />
+                    <TextField label="Department Group Name" value={this.state.groupName} onChange={this.onGroupNameChange} underlined required />       
+                    {/*<MaskedTextField label="Date" value={this.state.date} onChange={this.onDateChange} mask="9999-99-99" underlined maskChar="Y-M-D" />*/}
+                    <DatePicker  label="Date" allowTextInput={true} onSelectDate={this.onDateSelect} value={this.state.date} underlined />
                 </Stack>
                 <CompoundButton primary onClick={this.clicked}>Add Item</CompoundButton>
             </div>
