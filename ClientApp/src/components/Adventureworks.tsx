@@ -119,6 +119,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
     async deleteDepartment(){
         await fetch(`https://localhost:5001/adventureworks/${this.state.idToDelte}`,{method:"DELETE"})
         this.fetchAll()
+        //TODO add delete confirmation using get derpartment by id
         this.setState({isdeletedialoghidden:true})
     }
 
