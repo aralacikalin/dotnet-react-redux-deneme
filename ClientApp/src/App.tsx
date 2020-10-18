@@ -9,6 +9,7 @@ import FetchData from './components/FetchData';
 import './custom.css'
 import { createTheme } from '@fluentui/react';
 import Adventureworks from './components/Adventureworks';
+import AdventureworksItem from './components/AdventureworksItem';
 
 export default () => {
 
@@ -19,6 +20,7 @@ export default () => {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
         <Route path="/adventurework" component={Adventureworks}/>
+        <Route path="/addadventureworkitem" component={AdventureworksItem}/>
     </Layout>
     
 )};

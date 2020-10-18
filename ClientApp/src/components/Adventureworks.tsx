@@ -1,5 +1,6 @@
 import { DetailsList,SelectionMode,IColumn, CompoundButton } from '@fluentui/react';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import "./Adventureworks.css";
 
 interface IState{
@@ -118,6 +119,9 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         return(
             <div className="d-flex justify-content-between">
                 <CompoundButton primary onClick={this.prevButtonHandle} >Previous</CompoundButton>
+                <Link to="/addadventureworkitem">
+                    <CompoundButton primary>Add New Department</CompoundButton>
+                </Link>
                 <CompoundButton primary onClick={this.nextButtonHandle}>Next</CompoundButton>
             </div>
         );

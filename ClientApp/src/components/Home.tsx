@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import AdventureworksItem from './AdventureworksItem';
 
 const Home = () => (
   <div>
