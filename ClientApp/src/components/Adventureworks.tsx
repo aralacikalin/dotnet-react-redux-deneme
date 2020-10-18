@@ -1,4 +1,4 @@
-import { DetailsList,SelectionMode,IColumn, CompoundButton } from '@fluentui/react';
+import { DetailsList,SelectionMode,IColumn, CompoundButton, Selection, DialogType, Dialog, DialogFooter, PrimaryButton, DefaultButton } from '@fluentui/react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import "./Adventureworks.css";
@@ -8,14 +8,31 @@ interface IState{
     columns:IColumn[],
     currentIndex:number,
     departmentstoShow:Object[],
-    oldIndex:number
+    oldIndex:number,
+    idToDelte:number,
+    isdeletedialoghidden:boolean
 }
+interface IDepartment {
+    id: number,
+    name: string,
+    groupName: string,
+    modifiedDate: string,
+}
+const dialogContentProps = {
+    type: DialogType.normal,
+    title: 'Confirmation',
+    closeButtonAriaLabel: 'Close',
+    subText: 'Do you want to delete the selected department?',
+};
 
 export default class Adventureworks extends React.PureComponent<{},IState>{
     isUnmounted: boolean=false;
+    private _selection: Selection;
 
     constructor(props:any) {
         super(props);
+
+        this._selection=new Selection({})
 
         const columns: IColumn[] = [
             {
@@ -52,13 +69,19 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
             columns:columns,
             currentIndex:5,
             departmentstoShow:[],
-            oldIndex:0
+            oldIndex:0,
+            idToDelte:0,
+            isdeletedialoghidden:true
         }
         this.nextButtonHandle=this.nextButtonHandle.bind(this);
         this.prevButtonHandle=this.prevButtonHandle.bind(this);
+        this.oninvoked=this.oninvoked.bind(this);
+        this.toggleHideDialog=this.toggleHideDialog.bind(this);
+        this.deleteDepartment=this.deleteDepartment.bind(this);
+        this.fetchAll=this.fetchAll.bind(this);
     }
 
-    async componentDidMount(){
+    async fetchAll(){
         const res = await fetch("/adventureworks")
         const data =await res.json()
         console.log(data)
@@ -67,23 +90,60 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         }
         else{
 
-            this.setState({adventureworks:data,departmentstoShow:data.slice(0,5)})
+            this.setState({adventureworks:data,departmentstoShow:data.slice(0,5),currentIndex:5})
         }
+
+    }
+    async componentDidMount(){
+        this.fetchAll();
         
     }
     componentWillUnmount(){
         this.isUnmounted=true;
     }
 
+    oninvoked(item: IDepartment){
+        this.state.departmentstoShow.forEach((depart)=>{
+            if(Object.values(depart)[1]==item.name){
+                this.setState({idToDelte:Object.values(depart)[0]},()=>{
+                    this.setState({isdeletedialoghidden:false})
+                })
+            }
+        })
+        
+    }
+
+    toggleHideDialog(){
+        this.setState({isdeletedialoghidden:true})
+    }
+    async deleteDepartment(){
+        await fetch(`https://localhost:5001/adventureworks/${this.state.idToDelte}`,{method:"DELETE"})
+        this.fetchAll()
+        this.setState({isdeletedialoghidden:true})
+    }
+
     renderDepartmentTable(){
         return(
             <div>
+                
                 <DetailsList
                     items={this.state.departmentstoShow}
-                    selectionMode={SelectionMode.none}
+                    selectionMode={SelectionMode.single}
+                    selectionPreservedOnEmptyClick={true}
+                    selection={this._selection}
                     columns={this.state.columns}
+                    onItemInvoked={this.oninvoked}
                 />
-
+                <Dialog
+        hidden={this.state.isdeletedialoghidden}
+        onDismiss={this.toggleHideDialog}
+        dialogContentProps={dialogContentProps}
+      >
+        <DialogFooter>
+          <PrimaryButton onClick={this.deleteDepartment} text="Delete" />
+          <DefaultButton onClick={this.toggleHideDialog} text="Cancel" />
+        </DialogFooter>
+      </Dialog>
             </div>
         );
     }
@@ -132,6 +192,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
             <React.Fragment>
             <h1 id="tabelLabel">Human Recourses Departments</h1>
             <p>This component demonstrates fetching data from the server and working with URL parameters.</p>
+            <p>To delete a department from database click it twice.</p>
             {this.renderDepartmentTable()}
             {this.renderButtons()}
           </React.Fragment>
