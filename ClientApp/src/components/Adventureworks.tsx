@@ -1,4 +1,4 @@
-import { DetailsList,SelectionMode,IColumn, CompoundButton, Selection, DialogType, Dialog, DialogFooter, PrimaryButton, DefaultButton } from '@fluentui/react';
+import { DetailsList,SelectionMode,IColumn, CompoundButton, Selection, DialogType, Dialog, DialogFooter, PrimaryButton, DefaultButton, MessageBar, MessageBarType } from '@fluentui/react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import "./Adventureworks.css";
@@ -10,7 +10,9 @@ interface IState{
     departmentstoShow:Object[],
     oldIndex:number,
     idToDelte:number,
-    isdeletedialoghidden:boolean
+    isdeletedialoghidden:boolean,
+    deletedItem:IDepartment,
+    isMessageBar:boolean
 }
 interface IDepartment {
     id: number,
@@ -71,7 +73,9 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
             departmentstoShow:[],
             oldIndex:0,
             idToDelte:0,
-            isdeletedialoghidden:true
+            isdeletedialoghidden:true,
+            deletedItem:{name:"",groupName:"",id:0,modifiedDate:""},
+            isMessageBar:false
         }
         this.nextButtonHandle=this.nextButtonHandle.bind(this);
         this.prevButtonHandle=this.prevButtonHandle.bind(this);
@@ -79,6 +83,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         this.toggleHideDialog=this.toggleHideDialog.bind(this);
         this.deleteDepartment=this.deleteDepartment.bind(this);
         this.fetchAll=this.fetchAll.bind(this);
+        this.messageBarDismiss=this.messageBarDismiss.bind(this);
     }
 
     async fetchAll(){
@@ -117,34 +122,52 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         this.setState({isdeletedialoghidden:true})
     }
     async deleteDepartment(){
+        const res = await fetch("/adventureworks/"+this.state.idToDelte)
+        const data =await res.json()
+        this.setState({deletedItem:data})
+        console.log(this.state.deletedItem)
+
+
         await fetch(`https://localhost:5001/adventureworks/${this.state.idToDelte}`,{method:"DELETE"})
+
         this.fetchAll()
         //TODO add delete confirmation using get derpartment by id
         this.setState({isdeletedialoghidden:true})
+        this.setState({isMessageBar:true})
+    }
+    messageBarDismiss(){
+        this.setState({isMessageBar:false})
     }
 
     renderDepartmentTable(){
         return(
             <div>
-                
+                {(this.state.isMessageBar?
+                    <MessageBar 
+                        messageBarType={MessageBarType.success} 
+                        dismissButtonAriaLabel="Close" 
+                        onDismiss={this.messageBarDismiss}>
+                            {this.state.deletedItem.name} is deleted succesfully.
+                    </MessageBar>
+                    :null)}
                 <DetailsList
                     items={this.state.departmentstoShow}
-                    selectionMode={SelectionMode.single}
+                    selectionMode={SelectionMode.none}
                     selectionPreservedOnEmptyClick={true}
                     selection={this._selection}
                     columns={this.state.columns}
                     onItemInvoked={this.oninvoked}
-                />
+                    />
                 <Dialog
-        hidden={this.state.isdeletedialoghidden}
-        onDismiss={this.toggleHideDialog}
-        dialogContentProps={dialogContentProps}
-      >
-        <DialogFooter>
-          <PrimaryButton onClick={this.deleteDepartment} text="Delete" />
-          <DefaultButton onClick={this.toggleHideDialog} text="Cancel" />
-        </DialogFooter>
-      </Dialog>
+                    hidden={this.state.isdeletedialoghidden}
+                    onDismiss={this.toggleHideDialog}
+                    dialogContentProps={dialogContentProps}
+                >
+                    <DialogFooter>
+                        <PrimaryButton onClick={this.deleteDepartment} text="Delete" />
+                        <DefaultButton onClick={this.toggleHideDialog} text="Cancel" />
+                    </DialogFooter>
+                </Dialog>
             </div>
         );
     }
