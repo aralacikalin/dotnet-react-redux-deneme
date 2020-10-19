@@ -21,6 +21,14 @@ namespace dotnet_react_redux_deneme.Data{
             _context.departments.Add(department);
         }
 
+        public void deleteDepartment(Department department)
+        {
+            if(department==null){
+                throw new ArgumentNullException(nameof(department));
+            }
+            _context.departments.Remove(department);
+        }
+
         public IEnumerable<Department> getAllDepartments()
         {
             return _context.departments.ToList();

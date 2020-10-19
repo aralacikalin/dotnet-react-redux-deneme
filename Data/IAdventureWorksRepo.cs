@@ -6,7 +6,7 @@ namespace dotnet_react_redux_deneme.Data{
         IEnumerable<Department> getAllDepartments();
         Department getDepartmentById(int id);
         void createDepartment(Department department);
-
         bool saveChanges();
+        void deleteDepartment(Department department);
     }
 }

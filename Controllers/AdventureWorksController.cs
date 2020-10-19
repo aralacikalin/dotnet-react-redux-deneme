@@ -34,5 +34,16 @@ namespace dotnet_react_redux_deneme.Controllers{
             _repo.saveChanges();
             return Ok(department);
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteDepartment(int id){
+            var departmentFromRepo=_repo.getDepartmentById(id);
+            if(departmentFromRepo==null){
+                return NotFound();
+            }
+            _repo.deleteDepartment(departmentFromRepo);
+            _repo.saveChanges();
+            return NoContent();
+        }
     }
 }
