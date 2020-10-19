@@ -77,9 +77,11 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
     }
     onDateSelect(date: Date | null | undefined){
         if(date&&date){
-
+            var newdate=date
+            newdate.setHours(0,0,0,0)
+            newdate.setUTCHours(0,0,0,0)
             this.setState({
-                date:date
+                date:newdate
             })
         }
         else{
