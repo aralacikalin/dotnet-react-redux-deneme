@@ -10,6 +10,7 @@ import './custom.css'
 import { createTheme } from '@fluentui/react';
 import Adventureworks from './components/Adventureworks';
 import AdventureworksItem from './components/AdventureworksItem';
+import AdventureworksUpdateItem from './components/AdventureworksUpdateItem';
 
 export default () => {
 
@@ -21,6 +22,7 @@ export default () => {
         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
         <Route path="/adventurework" component={Adventureworks}/>
         <Route path="/addadventureworkitem" component={AdventureworksItem}/>
+        <Route path="/modifyadventure" component={AdventureworksUpdateItem}/>
     </Layout>
     
 )};

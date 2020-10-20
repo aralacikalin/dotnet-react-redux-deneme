@@ -5,13 +5,20 @@ import { Link } from 'react-router-dom';
 interface IState{
     name:string,
     groupName:string,
-    date:Date |undefined
+    date: Date|undefined
+}
+interface loc{
+    state:{id:number}
+}
+interface IProps{
+    location:loc
 }
 
-export default class AdventureworksItem extends React.PureComponent<{},IState>{
+export default class AdventureworksUpdateItem extends React.PureComponent<IProps,IState>{
+    isUnmounted: boolean=false;
 
 
-    constructor(props:any) {
+    constructor(props:IProps) {
         super(props);
         initializeIcons()
         this.state={
@@ -32,6 +39,26 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
         })
     }
     */
+    async fetchAll(){
+        const res = await fetch(`/adventureworks/${this.props.location.state.id}`)
+        const data =await res.json()
+        console.log(data)
+        if(this.isUnmounted){
+            return;
+        }
+        else{
+
+            this.setState({name:data.name,groupName:data.groupName,date:new Date(data.modifiedDate)})
+        }
+
+    }
+    async componentDidMount(){
+    this.fetchAll();
+    
+    }
+    componentWillUnmount(){
+    this.isUnmounted=true;
+    }
     onNameChange(event:React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string){
         this.setState({
             name:newValue||""
@@ -52,21 +79,21 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
             }
             else{
 
-                body={Name:this.state.name,GroupName:this.state.groupName,ModifiedDate:this.state.date}
+                body={DepartmentId:this.props.location.state.id,Name:this.state.name,GroupName:this.state.groupName,ModifiedDate:this.state.date}
             }
 
-            fetch("https://localhost:5001/adventureworks",
-            {method: 'POST',headers:{"Content-Type": "application/json"},
+            fetch(`/adventureworks/${this.props.location.state.id}`,
+            {method: 'PUT',headers:{"Content-Type": "application/json"},
                 body:JSON.stringify(body)
             })
             .then((res)=>
             {
                 console.log(res)
                 if(res.ok){
-                    alert("Department is added")
+                    alert("Department is modified")
                 }
                 else{
-                    alert("Department is not added")
+                    alert("Department is not modified")
     
                 }
             })
@@ -103,7 +130,7 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
                 </Stack>
                 <div className="d-flex justify-content-between">
                     <Link to="/adventurework">
-                        <CompoundButton primary onClick={this.clicked}>Add Item</CompoundButton>
+                        <CompoundButton primary onClick={this.clicked}>Modify Item</CompoundButton>
                     </Link>
                     <Link to="/adventurework">
                         <CompoundButton primary >Cancel</CompoundButton>

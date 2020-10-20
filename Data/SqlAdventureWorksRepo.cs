@@ -43,5 +43,16 @@ namespace dotnet_react_redux_deneme.Data{
         {
             return (_context.SaveChanges()>=0);
         }
+
+        public void updateDepartment(Department department)
+        {
+            var deptFromDbSet=_context.departments.FirstOrDefault(p=>p.DepartmentId==department.DepartmentId);
+
+            
+            deptFromDbSet.GroupName=department.GroupName;
+            deptFromDbSet.Name=department.Name;
+            deptFromDbSet.ModifiedDate=department.ModifiedDate;
+            
+        }
     }
 }
