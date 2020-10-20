@@ -8,5 +8,6 @@ namespace dotnet_react_redux_deneme.Data{
         void createDepartment(Department department);
         bool saveChanges();
         void deleteDepartment(Department department);
+        void updateDepartment(Department department);
     }
 }
