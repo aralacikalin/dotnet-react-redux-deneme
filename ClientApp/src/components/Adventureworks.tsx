@@ -165,6 +165,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
                 >
                     <DialogFooter>
                         <PrimaryButton onClick={this.deleteDepartment} text="Delete" />
+                        <Link to={{pathname:"modifyadventure",state:{id:this.state.idToDelte}}}><PrimaryButton  text="Modify" /></Link>
                         <DefaultButton onClick={this.toggleHideDialog} text="Cancel" />
                     </DialogFooter>
                 </Dialog>
@@ -216,7 +217,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
             <React.Fragment>
             <h1 id="tabelLabel">Human Recourses Departments</h1>
             <p>This component demonstrates fetching data from the server and working with URL parameters.</p>
-            <p>To delete a department from database click it twice.</p>
+            <p>To delete or modify a department from database, click it twice.</p>
             {this.renderDepartmentTable()}
             {this.renderButtons()}
           </React.Fragment>
