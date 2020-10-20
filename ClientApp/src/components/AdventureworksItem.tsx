@@ -1,5 +1,6 @@
 import { CompoundButton, DatePicker, initializeIcons, MaskedTextField, Stack, TextField } from '@fluentui/react';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 interface IState{
     name:string,
@@ -100,7 +101,10 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
                     {/*<MaskedTextField label="Date" value={this.state.date} onChange={this.onDateChange} mask="9999-99-99" underlined maskChar="Y-M-D" />*/}
                     <DatePicker  label="Date" allowTextInput={true} onSelectDate={this.onDateSelect} value={this.state.date} underlined />
                 </Stack>
+                <Link to="/adventurework">
+
                 <CompoundButton primary onClick={this.clicked}>Add Item</CompoundButton>
+                </Link>
             </div>
         );
     }
