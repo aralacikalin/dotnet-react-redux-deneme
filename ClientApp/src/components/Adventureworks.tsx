@@ -20,6 +20,12 @@ interface IDepartment {
     groupName: string,
     modifiedDate: string,
 }
+interface IAdventureItem {
+    id: number,
+    name: string,
+    groupName: string,
+    modifiedDate: string|Date,
+}
 const dialogContentProps = {
     type: DialogType.normal,
     title: 'Confirmation',
@@ -94,6 +100,9 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
             return;
         }
         else{
+            var d:IAdventureItem[]=data
+            d.forEach(d=>{d.modifiedDate=new Date(d.modifiedDate).toLocaleString()})
+
 
             this.setState({adventureworks:data,departmentstoShow:data.slice(0,5),currentIndex:5})
         }
@@ -128,7 +137,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         console.log(this.state.deletedItem)
 
 
-        await fetch(`https://localhost:5001/adventureworks/${this.state.idToDelte}`,{method:"DELETE"})
+        await fetch(`/adventureworks/${this.state.idToDelte}`,{method:"DELETE"})
 
         this.fetchAll()
         //TODO add delete confirmation using get derpartment by id

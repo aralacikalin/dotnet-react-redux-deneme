@@ -55,7 +55,7 @@ export default class AdventureworksItem extends React.PureComponent<{},IState>{
                 body={Name:this.state.name,GroupName:this.state.groupName,ModifiedDate:this.state.date}
             }
 
-            fetch("https://localhost:5001/adventureworks",
+            fetch("/adventureworks",
             {method: 'POST',headers:{"Content-Type": "application/json"},
                 body:JSON.stringify(body)
             })
