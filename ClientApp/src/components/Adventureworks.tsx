@@ -90,22 +90,30 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         this.deleteDepartment=this.deleteDepartment.bind(this);
         this.fetchAll=this.fetchAll.bind(this);
         this.messageBarDismiss=this.messageBarDismiss.bind(this);
+        this.fetch=this.fetch.bind(this);
+    }
+
+    async fetch(){
+        const res = await fetch("/adventureworks")
+        const data =await res.json()
+        return data
     }
 
     async fetchAll(){
-        const res = await fetch("/adventureworks")
-        const data =await res.json()
-        console.log(data)
-        if(this.isUnmounted){
-            return;
-        }
-        else{
-            var d:IAdventureItem[]=data
-            d.forEach(d=>{d.modifiedDate=new Date(d.modifiedDate).toLocaleString()})
+        this.fetch().then(data=>{
 
-
-            this.setState({adventureworks:data,departmentstoShow:data.slice(0,5),currentIndex:5})
-        }
+            console.log(data)
+            if(this.isUnmounted){
+                return;
+            }
+            else{
+                var d:IAdventureItem[]=data
+                d.forEach(d=>{d.modifiedDate=new Date(d.modifiedDate).toLocaleString()})
+    
+    
+                this.setState({adventureworks:data,departmentstoShow:data.slice(0,5),currentIndex:5})
+            }
+        })
 
     }
     async componentDidMount(){
