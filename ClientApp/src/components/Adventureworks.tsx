@@ -94,7 +94,7 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
     }
 
     async fetch(){
-        const res = await fetch("/adventureworks")
+        const res = await fetch("api/adventureworks")
         const data =await res.json()
         return data
     }
@@ -139,13 +139,13 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
         this.setState({isdeletedialoghidden:true})
     }
     async deleteDepartment(){
-        const res = await fetch("/adventureworks/"+this.state.idToDelte)
+        const res = await fetch("api/adventureworks/"+this.state.idToDelte)
         const data =await res.json()
         this.setState({deletedItem:data})
         console.log(this.state.deletedItem)
 
 
-        await fetch(`/adventureworks/${this.state.idToDelte}`,{method:"DELETE"})
+        await fetch(`api/adventureworks/delete/${this.state.idToDelte}`,{method:"DELETE"})
 
         this.fetchAll()
         //TODO add delete confirmation using get derpartment by id

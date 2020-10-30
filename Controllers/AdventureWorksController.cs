@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_react_redux_deneme.Controllers{
 
-    [ApiController,Route("[controller]")]
+    [ApiController,Route("api/[controller]")]
     public class AdventureWorksController:ControllerBase{
         private readonly IAdventureWorksRepo _repo;
 
@@ -15,46 +15,40 @@ namespace dotnet_react_redux_deneme.Controllers{
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Department>> getAllDepartments(){
+        public IEnumerable<Department> getAllDepartments(){
             var departments=_repo.getAllDepartments();
-            return Ok(departments);
+            return departments;
             
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Department> getDepartmentById(int id){
+        public Department getDepartmentById(int id){
             var department=_repo.getDepartmentById(id);
-            return Ok(department);
+            return department;
             
         }
 
-        [HttpPost]
-        public ActionResult<Department> createDepartment(Department department){
+        [HttpPost("create")]
+        public Department createDepartment(Department department){
             _repo.createDepartment(department);
             _repo.saveChanges();
-            return Ok(department);
+            return department;
         }
 
-        [HttpPut("{id}")]
-        public ActionResult updateDepartment(int id, Department department){
+        [HttpPut("edit/{id}")]
+        public int updateDepartment(int id, Department department){
             var deptFromRepo=_repo.getDepartmentById(id);
-            if(deptFromRepo==null){
-                return NotFound();
-            }
             _repo.updateDepartment(department);
             _repo.saveChanges();
-            return Ok();
+            return 1;
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult DeleteDepartment(int id){
+        [HttpDelete("delete/{id}")]
+        public int DeleteDepartment(int id){
             var departmentFromRepo=_repo.getDepartmentById(id);
-            if(departmentFromRepo==null){
-                return NotFound();
-            }
             _repo.deleteDepartment(departmentFromRepo);
             _repo.saveChanges();
-            return NoContent();
+            return 1;
         }
     }
 }

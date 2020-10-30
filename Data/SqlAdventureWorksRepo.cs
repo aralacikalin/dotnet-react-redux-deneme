@@ -21,12 +21,13 @@ namespace dotnet_react_redux_deneme.Data{
             _context.departments.Add(department);
         }
 
-        public void deleteDepartment(Department department)
+        public int deleteDepartment(Department department)
         {
             if(department==null){
                 throw new ArgumentNullException(nameof(department));
             }
             _context.departments.Remove(department);
+            return 1;
         }
 
         public IEnumerable<Department> getAllDepartments()
@@ -44,14 +45,22 @@ namespace dotnet_react_redux_deneme.Data{
             return (_context.SaveChanges()>=0);
         }
 
-        public void updateDepartment(Department department)
+        public int updateDepartment(Department department)
         {
-            var deptFromDbSet=_context.departments.FirstOrDefault(p=>p.DepartmentId==department.DepartmentId);
 
             
+            if(getDepartmentById(department.DepartmentId)==null){
+                throw new ArgumentNullException(nameof(department));
+            }
+            var deptFromDbSet=_context.departments.FirstOrDefault(p=>p.DepartmentId==department.DepartmentId);
             deptFromDbSet.GroupName=department.GroupName;
             deptFromDbSet.Name=department.Name;
             deptFromDbSet.ModifiedDate=department.ModifiedDate;
+            return 1;
+            
+            
+
+            
             
         }
     }
