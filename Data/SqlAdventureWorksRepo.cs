@@ -53,6 +53,7 @@ namespace dotnet_react_redux_deneme.Data{
             deptFromDbSet.Name=department.Name;
             deptFromDbSet.ModifiedDate=department.ModifiedDate;
             
+            
         }
     }
 }

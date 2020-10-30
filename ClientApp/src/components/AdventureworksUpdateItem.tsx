@@ -40,7 +40,7 @@ export default class AdventureworksUpdateItem extends React.PureComponent<IProps
     }
     */
     async fetchAll(){
-        const res = await fetch(`/adventureworks/${this.props.location.state.id}`)
+        const res = await fetch(`api/adventureworks/${this.props.location.state.id}`)
         const data =await res.json()
         console.log(data)
         if(this.isUnmounted){
@@ -82,7 +82,7 @@ export default class AdventureworksUpdateItem extends React.PureComponent<IProps
                 body={DepartmentId:this.props.location.state.id,Name:this.state.name,GroupName:this.state.groupName,ModifiedDate:this.state.date}
             }
 
-            fetch(`/adventureworks/${this.props.location.state.id}`,
+            fetch(`api/adventureworks/edit/${this.props.location.state.id}`,
             {method: 'PUT',headers:{"Content-Type": "application/json"},
                 body:JSON.stringify(body)
             })
