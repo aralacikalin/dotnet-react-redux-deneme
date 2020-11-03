@@ -1,7 +1,9 @@
 using dotnet_react_redux_deneme.Data;
+using dotnet_react_redux_deneme.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,11 @@ namespace dotnet_react_redux_deneme
             services.AddDbContext<AdventureWorksContext>(opt=>opt.UseSqlServer(
                 Configuration.GetConnectionString("AdventureWorksConnection")
             ));
+            services.AddDbContext<ApplicationIdentityDbContext>(opt=>opt.UseSqlServer(
+                Configuration.GetConnectionString("AdventureWorksIdentityConnection")
+            ));
+            services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>().AddDefaultTokenProviders();
+
             services.AddScoped<IAdventureWorksRepo,SqlAdventureWorksRepo>();
             
         }
@@ -62,6 +69,9 @@ namespace dotnet_react_redux_deneme
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
