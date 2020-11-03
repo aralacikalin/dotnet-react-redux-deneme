@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using dotnet_react_redux_deneme.Data;
 using dotnet_react_redux_deneme.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_react_redux_deneme.Controllers{
 
     [ApiController,Route("api/[controller]")]
+    [Authorize(Roles="admin")]
+
     public class AdventureWorksController:ControllerBase{
         private readonly IAdventureWorksRepo _repo;
 

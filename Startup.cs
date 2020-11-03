@@ -47,6 +47,12 @@ namespace dotnet_react_redux_deneme
             services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>().AddDefaultTokenProviders();
 
             services.AddScoped<IAdventureWorksRepo,SqlAdventureWorksRepo>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = false;
+                options.Cookie.SecurePolicy= Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
+            });
             
         }
 
