@@ -13,9 +13,15 @@ namespace dotnet_react_redux_deneme.Controllers{
         }
 
         [HttpPost("Authenticate")]
-        public async Task<ActionResult> login(BasicUser user){
+        public async Task<string> login(BasicUser user){
             var result = await signInManager.PasswordSignInAsync(user.UserName,user.Password,false,false);
-            return Ok();
+            if(result.Succeeded){
+
+            return user.UserName;
+            }
+            else{
+                return null;
+            }
         }
 
         [HttpGet("Logout")]

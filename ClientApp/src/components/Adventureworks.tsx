@@ -95,8 +95,11 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
 
     async fetch(){
         const res = await fetch("api/adventureworks")
-        const data =await res.json()
-        return data
+        if(res.ok){
+            const data =await res.json()
+
+            return data
+        }
     }
 
     async fetchAll(){
@@ -107,11 +110,15 @@ export default class Adventureworks extends React.PureComponent<{},IState>{
                 return;
             }
             else{
+
                 var d:IAdventureItem[]=data
-                d.forEach(d=>{d.modifiedDate=new Date(d.modifiedDate).toLocaleString()})
-    
-    
-                this.setState({adventureworks:data,departmentstoShow:data.slice(0,5),currentIndex:5})
+                if(d!=undefined){
+
+                    d.forEach(d=>{d.modifiedDate=new Date(d.modifiedDate).toLocaleString()})
+        
+        
+                    this.setState({adventureworks:data,departmentstoShow:data.slice(0,5),currentIndex:5})
+                }
             }
         })
 

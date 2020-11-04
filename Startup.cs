@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using dotnet_react_redux_deneme.Data;
 using dotnet_react_redux_deneme.Models;
 using Microsoft.AspNetCore.Builder;
@@ -52,6 +53,14 @@ namespace dotnet_react_redux_deneme
             {
                 options.Cookie.HttpOnly = false;
                 options.Cookie.SecurePolicy= Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
+                options.Events.OnRedirectToAccessDenied=context=>{
+                    context.Response.StatusCode=403;
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToLogin=context=>{
+                    context.Response.StatusCode=403;
+                    return Task.CompletedTask;
+                };
             });
             
         }

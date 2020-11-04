@@ -3,6 +3,7 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler } from 'reactst
 import { Link, Redirect } from 'react-router-dom';
 import './NavMenu.css';
 import {Pivot,PivotItem} from "@fluentui/react";
+import Login from './Login';
 
 export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }> {
     public state = {
@@ -35,6 +36,7 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                         <Redirect to="/adventurework"></Redirect>
                                     </PivotItem>
                                 </Pivot>
+                                <Login/>
                             </ul>
                         </Collapse>
                     </Container>
